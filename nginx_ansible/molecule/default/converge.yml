@@ -1,0 +1,7 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: "Include acme.nginx_ansible"
+      include_role:
+        name: "acme.nginx_ansible"
