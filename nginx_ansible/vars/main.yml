@@ -1,2 +1,7 @@
 ---
-# vars file for nginx_ansible
+pkg_list:
+  - httpd
+  - firewalld
+svc_list:
+  - httpd
+  - firewalld
