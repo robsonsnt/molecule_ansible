@@ -1,0 +1,40 @@
+---
+trigger:
+- none
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+
+- task: CopyFiles@2
+  displayName: 'Copy file'
+  inputs:
+    SourceFolder: '$(Build.SourcesDirectory)'
+    OverWrite: true 
+    Contents: |
+      **/*
+    TargetFolder: '/tmp/'
+
+- task: UsePythonVersion@0
+  inputs:
+    versionSpec: '3.8'
+
+- script: |
+    cd /tmp/nginx_ansible
+    python -m venv .venv && source .venv/bin/activate
+    python -m pip install "molecule[lint,docker]" "wheel" "ansible"
+  displayName: Install dependencies
+
+- script: |
+    cd /tmp/nginx_ansible
+    source .venv/bin/activate
+    molecule test
+  displayName: Test relevant platforms
+
+- task: DeleteFiles@1
+  displayName: Delete Files
+  inputs:
+    SourceFolder: '/tmp/nginx_ansible'
+    Contents: '**/*'
+    RemoveSourceFolder: true
