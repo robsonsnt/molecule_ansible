@@ -1,0 +1,25 @@
+---
+# tasks file for rundeck_role
+- name: Add repository Rundeck
+  yum_repository:
+    name: rundeck
+    description: RUNDECK YUM repo
+    baseurl: https://packages.rundeck.com/pagerduty/rundeck/rpm_any/rpm_any/$basearch
+    enabled: yes
+
+- name: Install Java
+  dnf:
+    name: java
+    state: latest
+
+- name: Install Rundeck
+  dnf:
+    name: rundeck
+    state: latest
+    disable_gpg_check: yes
+
+- name: Start service rundeck
+  service:
+    name: rundeckd
+    state: started
+    enabled: yes
