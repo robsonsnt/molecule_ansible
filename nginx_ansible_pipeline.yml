@@ -23,7 +23,7 @@ steps:
 - script: |
     cd /tmp/nginx_ansible
     python -m venv .venv && source .venv/bin/activate
-    python -m pip install "molecule[lint,docker]" "wheel" "ansible"
+    python -m pip install "molecule[lint,docker]" "wheel" "ansible" "pytest" "testinfra" "python-tss-sdk" 
   displayName: Install dependencies
 
 - script: |
