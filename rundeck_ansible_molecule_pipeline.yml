@@ -1,0 +1,40 @@
+---
+trigger:
+- none
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+
+- task: CopyFiles@2
+  displayName: 'Copy file'
+  inputs:
+    SourceFolder: '$(Build.SourcesDirectory)'
+    OverWrite: true 
+    Contents: |
+      **/*
+    TargetFolder: '/tmp/'
+
+- task: UsePythonVersion@0
+  inputs:
+    versionSpec: '3.8'
+
+- script: |
+    cd /tmp/rundeck_role
+    python -m venv .venv && source .venv/bin/activate
+    python -m pip install "molecule[lint,docker]" "wheel" "ansible" "pytest" "pytest-testinfra" "python-tss-sdk" 
+  displayName: Install dependencies
+
+- script: |
+    cd /tmp/rundeck_role
+    source .venv/bin/activate
+    molecule test
+  displayName: Test relevant platforms
+
+- task: DeleteFiles@1
+  displayName: Delete Files
+  inputs:
+    SourceFolder: '/tmp/rundeck_role'
+    Contents: '**/*'
+    RemoveSourceFolder: true
