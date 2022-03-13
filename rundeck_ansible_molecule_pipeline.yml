@@ -13,7 +13,7 @@ steps:
     SourceFolder: '$(Build.SourcesDirectory)'
     OverWrite: true 
     Contents: |
-      rundeck_role/*
+      rundeck_role/**
     TargetFolder: '/tmp/'
 
 - task: UsePythonVersion@0
